@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Train Activity</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin-left: 100px;
+            margin-right: 100px;
+            margin-bottom: 40px;
+            margin-top: 0px;
+            font-size: 15px;
+        }
+        form {
+            padding-left: 50px;
+            padding-right: 50px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+        }
+
+        table {
+            border: 0.5px solid lightgray;
+        }
+        
+        .secondForm {
+            border: 0.5px solid lightgray;
+        }
+        #submit-emp {
+            background-color:#ff3333;
+            height: 50px;
+            width: 120px;
+            border: 1px solid gray;
+
+            
+        }
+        .secondForm {
+
+            padding: 10px;
+        }
+        h3 {
+            font-size: 18px;
+            background-color: gray;
+            opacity: 0.5;
+            color: white;
+            height: 40px;
+            font-family: 'PT Serif', serif;
+            font-weight: bold;
+            padding: 7px;
+            border: 1px solid gray;
+            
+            
+        }
+
+        .addTrain {
+            padding-left: 50px;
+            padding-right: 50px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+        }
+        
+    </style>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.1/firebase-database.js"></script>
+</head>
+
+<body>
+        <!-- <div class="container"> -->
+                <div class="current">
+
+    <form>
+        <img src= "https://images.unsplash.com/photo-1527295110-5145f6b148d0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80" alt = "train picture" style="width:100%;height:400px">
+        <br>
+
+        <br>
+
+        <h3> Current Train Schedule</h3>
+
+        <table class="table table-striped">
+            <thead>
+            
+                   
+                    <th id="trainName" scope="col">Train Name</th>
+                    <th id="destination" scope="col">Destination</th>
+                    <th id="frequency" scope="col">Frequency</th>
+                    <th id="nextArrival" scope="col">Next Arrival</th>
+                    <th id="minutesAway" scope="col">Munites Away</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">Trenton Express</th>
+                    <td>Trenton</td>
+                    <td>25</td>
+                    <td>05:35</td>
+                    <td>10</td>
+                   
+                </tr>
+                <tr>
+                    <th scope="row">Oregon Trail</th>
+                    <td>Salem, Oregon</td>
+                    <td>3600</td>
+                    <td>01:39</td>
+                    <td>1154</td>
+                    
+                </tr>
+
+
+            </tbody>
+        </table>
+    </div> <!-- to close current div-->
+
+<div class = "addTrain">
+    <h3>Add Train</h3>
+        <div class="secondForm">
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Train Name</label>
+                <input type="trainName" class="form-control" id="exampleFormControlInput1" placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Destination</label>
+                <input type="destination" class="form-control" id="exampleFormControlInput2" placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">First Train Time HH:mm (military time)</label>
+                <input type="firstTrain" class="form-control" id="exampleFormControlInput3" placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Frequency</label>
+                <input type="frequency" class="form-control" id="exampleFormControlInput4"
+                    placeholder="">
+            </div>
+        </div>
+        <br>
+       
+        <button type="submit" id="submit-emp" class="btn btn-primary">Submit</button>
+
+    </form>
+</div> <!-- to close add train-->
+
+
+
+
+
+    
+    <script>
+        var config = {
+            apiKey: "AIzaSyDaR6H3ejsZod-B92hkQB7Fu3ZNkZ6UwqQ", // new api key 
+            authDomain: "employee-timesheet-b2a87.firebaseapp.com",
+            databaseURL: "https://employee-timesheet-b2a87.firebaseio.com", //update database 
+            projectId: "employee-timesheet-b2a87",
+            storageBucket: "",
+            messagingSenderId: "864047891646",
+            appId: "1:864047891646:web:674254b6967f2fbd"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(config);
+
+        var database = firebase.database();
+        
+        $("#submit-emp").on('click', function (event) {
+            event.preventDefault();
+            var empName = $("#exampleFormControlInput1").val().trim();
+            var empRole = $("#exampleFormControlInput2").val().trim();
+            var empStart = $("#exampleFormControlInput3").val().trim();
+            var empRate = $("#exampleFormControlInput4").val().trim();
+
+            var newEmp = {
+                name: empName,
+                role: empRole,
+                start: empStart,
+                rate: empRate,
+            }
+            console.log(newEmp);
+          database.ref().push(newEmp);
+        });
+
+
+
+
+
+    </script>
+<!-- </div> to close container -->
+</body>
+
+</html>
