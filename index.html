@@ -34,6 +34,7 @@
         td {
             display: inline-block;
             width: 16.575%;
+
         }
 
         body {
@@ -65,7 +66,7 @@
 
     <div class="container">
 
-        <!-- Jumbotron -->
+        <!-- jumbotron -->
         <div class="jumbotron" style="background-color: black; color: white">
             <img src="https://images.unsplash.com/photo-1527295110-5145f6b148d0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
                 alt="train picture" style="width:100%;height: 100%">
@@ -78,7 +79,7 @@
 
             <div class="col-md-12">
 
-                <!-- Current Train-->
+                <!-- current train-->
                 <div class="card mb-4">
                     <div class="card-header">Current Train Schedule</div>
                     <div class="card-body">
@@ -136,7 +137,7 @@
 
     </div>
 
-    <!-- JavaScript -->
+ 
     <script>
         //  Initialize Firebase
 
@@ -158,13 +159,12 @@
         $("#add-train-btn").on("click", function (event) {
             event.preventDefault();
 
-            // Grabs user input
+            // users input
             var name = $("#train-name-input").val().trim();
             var destination = $("#destination-input").val().trim();
             var firstTrain = $("#firstTrain-input").val().trim();
             var frequency = $("#frequency-input").val().trim();
 
-            // Creates local "temporary" object for holding train data
             var newTrain = {
                 name: name,
                 destination: destination,
@@ -172,10 +172,8 @@
                 frequency: frequency
             };
 
-            // Uploads train data to the database
             database.ref().push(newTrain);
 
-            // Logs everything to console
             console.log(newTrain.name);
             console.log(newTrain.destination);
             console.log(newTrain.firstTrain);
@@ -190,7 +188,7 @@
             $("#frequency-input").val("");
         });
 
-        // 3. Create Firebase event for adding train to the database and a row in the html when a user adds an entry
+        // to create Firebase event 
         database.ref().on("child_added", function (childSnapshot) {
             console.log(childSnapshot.val());
 
@@ -206,21 +204,18 @@
             console.log(firstTrain);
             console.log(frequency);
 
+    
             // Prettify the train start
-            var empStartPretty = moment.unix(firstTrain).format("HH:mm");
+            // var trainStartPretty = moment.unix(firstTrain).format("HH:mm");
 
+            let convertedFirstTrain = moment(firstTrain, "X").subtract(1, "years");
 
             // grab current time and military time conversion 
             let currentTime = moment();
             console.log(currentTime);
-
-
-
             //set time difference
-            let timeDiff = currentTime.diff(moment(currentTime), "minutes");
+            let timeDiff = currentTime.diff(moment(convertedFirstTrain), "minutes");
             console.log(timeDiff);
-
-
             let timePassed = timeDiff % frequency;
             console.log(timePassed);
             // time left until the next train arrives
@@ -228,8 +223,6 @@
             console.log(minAway);
             // next train time
             let nextTrain = currentTime.add(minAway, "minutes");
-
-
             // Create the new row
             var newRow = $("<tr>").append(
                 $("<th>").text(name),
@@ -237,10 +230,7 @@
                 $("<th>").text(frequency),
                 $("<th>").text(moment(nextTrain).format("HH:mm")),
                 $("<th>").text(minAway)
-
-
             );
-
             // Append the new row to the table
             $("#train-table > tbody").append(newRow);
         }, function (errorObj) {
